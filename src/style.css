@@ -14,7 +14,7 @@
   --canvas: #f7f6fa;
   --dots: #dcd7e6;
   --grid: #ded8eb60;
-  --performance: #f8f5ff;
+  --speed-panel: #f8f5ff;
   --danger-text: #b03246;
   --danger-bg: #fff4f5;
   --danger-border: #dba7b0;
@@ -36,7 +36,7 @@
   --canvas: #17141f;
   --dots: #3a304a;
   --grid: #56446c60;
-  --performance: #251e33;
+  --speed-panel: #251e33;
   --danger-text: #ffabb9;
   --danger-bg: #35222e;
   --danger-border: #79505e;
@@ -724,78 +724,71 @@ footer {
     gap: 4px;
   }
 }
-.performancebar {
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.speedbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 10px 25px;
-  background: var(--performance);
+  background: var(--speed-panel);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
   flex-wrap: wrap;
 }
-.performance-heading {
+.speed-heading {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
-.performance-heading strong {
-  font-size: 12px;
+.speed-heading strong {
+  font-size: 13px;
 }
-.performance-heading small {
-  font-size: 10px;
+.speed-heading small {
+  font-size: 11px;
   color: var(--muted);
 }
-.performance-actions {
+.speed-options {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.performance-actions button {
-  font-size: 11px;
-  min-height: 38px;
-}
-.performance-actions label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   gap: 6px;
 }
-.performance-actions select {
-  width: 75px;
-  padding: 8px;
+.speed-options button {
+  min-width: 64px;
+  min-height: 44px;
+  font-weight: 600;
+  font-size: 15px;
 }
-.record-active {
-  color: var(--danger-text);
-  border-color: var(--danger-border);
-  background: var(--danger-bg);
-}
-button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-.performancebar > audio {
-  display: none;
+.speed-options .speed-active {
+  background: #7756cc;
+  border-color: #7756cc;
+  color: white;
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 3px var(--accent-border);
 }
 @media (max-width: 760px) {
-  .performancebar {
-    padding: 8px 12px;
-    gap: 8px;
+  .speedbar {
+    padding: 10px 12px;
   }
-  .performance-actions {
-    gap: 5px;
-  }
-  .performance-actions button {
-    padding: 8px;
+  .speed-heading small {
     font-size: 10px;
   }
-  .performance-heading small {
-    font-size: 9px;
+}
+@media (max-width: 480px) {
+  .speedbar {
+    gap: 8px;
+  }
+  .speed-options {
+    width: 100%;
+  }
+  .speed-options button {
+    flex: 1;
+    min-width: 0;
   }
 }
-
 .header-actions {
   display: flex;
   align-items: center;

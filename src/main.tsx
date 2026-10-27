@@ -10,8 +10,6 @@ import {
   type Sound,
 } from "./store";
 import "./style.css";
-import { PerformanceMixer } from "./performance";
-import { PerformanceControls } from "./PerformanceControls";
 const uid = () => crypto.randomUUID();
 const colors = [
   "#b9a4ef",
@@ -50,9 +48,6 @@ function App() {
       /* Still allow switching for this session. */
     }
   }, [night]);
-  const mixer = useRef(new PerformanceMixer());
-  const performancePlayer = useRef<HTMLAudioElement | null>(null);
-  const [performanceRecording, setPerformanceRecording] = useState(false);
   const [board, setBoard] = useState<Board>(fresh),
     [sounds, setSounds] = useState<Sound[]>([]),
     [ready, setReady] = useState(false),
@@ -89,7 +84,6 @@ function App() {
         ),
       );
     return () => {
-      mixer.current.close();
       audio.current.forEach((a) => a.pause());
       urls.current.forEach(URL.revokeObjectURL);
       stream.current?.getTracks().forEach((t) => t.stop());
@@ -124,6 +118,13 @@ function App() {
     const t = setInterval(() => setElapsed((n) => n + 1), 1000);
     return () => clearInterval(t);
   }, [recording]);
+  useEffect(() => {
+    // Update every active sound in place; keep its position and playback state.
+    audio.current.forEach((a) => {
+      a.playbackRate = board.speed ?? 1;
+      a.preservesPitch = true;
+    });
+  }, [board.speed]);
   const update = (v: Partial<Board>) => setBoard((b) => ({ ...b, ...v }));
   const change = (v: Partial<Pad>) =>
     setBoard((b) => ({
@@ -131,10 +132,6 @@ function App() {
       pads: b.pads.map((p) => (p.id === selected ? { ...p, ...v } : p)),
     }));
   const stop = () => {
-    if (performancePlayer.current) {
-      performancePlayer.current.pause();
-      performancePlayer.current.currentTime = 0;
-    }
     audio.current.forEach((a) => {
       a.pause();
       a.currentTime = 0;
@@ -153,7 +150,6 @@ function App() {
     let a = audio.current.get(p.id);
     if (!a || a.dataset.sound !== s.id) {
       a?.pause();
-      if (a) mixer.current.remove(a);
       let url = urls.current.get(s.id);
       if (!url) {
         url = URL.createObjectURL(s.blob);
@@ -171,11 +167,9 @@ function App() {
     }
     a.pause();
     a.currentTime = 0;
-    try {
-      mixer.current.route(a, p.volume);
-    } catch {
-      a.volume = p.volume;
-    }
+    a.volume = p.volume;
+    a.playbackRate = board.speed ?? 1;
+    a.preservesPitch = true;
     a.loop = p.loop;
     void a
       .play()
@@ -444,7 +438,6 @@ function App() {
             ▷ Play
           </button>
           <button
-            disabled={performanceRecording}
             className={edit ? "active" : ""}
             onClick={() => {
               stop();
@@ -471,17 +464,25 @@ function App() {
           </button>
         </div>
       </header>
-      <PerformanceControls
-        mixer={mixer.current}
-        player={performancePlayer}
-        onBegin={() => {
-          stop();
-          setEdit(false);
-          select(undefined);
-        }}
-        onRecordingChange={setPerformanceRecording}
-        onError={setError}
-      />
+      <section className="speedbar" aria-label="Board speed">
+        <div className="speed-heading">
+          <strong>Board speed</strong>
+          <small>One speed for every sound · change it anytime</small>
+        </div>
+        <div className="speed-options" role="group" aria-label="Playback speed">
+          {[0.5, 1, 2, 4].map((speed) => (
+            <button
+              key={speed}
+              aria-label={`Entire board ${speed.toFixed(1)}×`}
+              aria-pressed={(board.speed ?? 1) === speed}
+              className={(board.speed ?? 1) === speed ? "speed-active" : ""}
+              onClick={() => update({ speed })}
+            >
+              {speed.toFixed(1)}×
+            </button>
+          ))}
+        </div>
+      </section>
       <div className="boardbar">
         <div>
           <input
@@ -495,7 +496,6 @@ function App() {
         </div>
         <div className="actions">
           <button
-            disabled={performanceRecording}
             onClick={() => {
               if (
                 confirm(
@@ -517,7 +517,6 @@ function App() {
             <input
               type="file"
               accept="application/json,.json"
-              disabled={performanceRecording}
               onChange={(e) => void importBoard(e.target.files?.[0])}
             />
           </label>

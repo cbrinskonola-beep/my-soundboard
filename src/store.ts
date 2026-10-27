@@ -24,6 +24,7 @@ export type Board = {
   height: number;
   zoom: number;
   snap: boolean;
+  speed?: number;
 };
 export const fresh = (): Board => ({
   name: "My soundboard",
@@ -32,6 +33,7 @@ export const fresh = (): Board => ({
   height: 1000,
   zoom: 1,
   snap: false,
+  speed: 1,
 });
 const db = openDB("soundspace", 1, {
   upgrade(db) {
@@ -76,6 +78,7 @@ export function validBoard(b: unknown): b is Board {
     a.zoom >= 0.25 &&
     a.zoom <= 2 &&
     typeof a.snap === "boolean" &&
+    (a.speed === undefined || [0.5, 1, 2, 4].includes(a.speed)) &&
     Array.isArray(a.pads) &&
     a.pads.length <= 1000 &&
     new Set(a.pads.map((p) => p.id)).size === a.pads.length &&
@@ -106,15 +109,4 @@ export function validBoard(b: unknown): b is Board {
         (!p.image || p.image.startsWith("data:image/")),
     )
   );
-}
-
-// A separate key leaves existing boards and uploaded sounds untouched.
-export async function loadPerformance() {
-  return (await (await db).get("data", "performance")) as
-    import("./performance").PerformanceTake | undefined;
-}
-export async function savePerformance(
-  take: import("./performance").PerformanceTake,
-) {
-  await (await db).put("data", take, "performance");
 }
