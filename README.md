@@ -22,6 +22,8 @@ The production app includes the offline service worker. Development intentionall
 
 ## Use the board
 
+Use **Night mode** in the top toolbar for a dark interface, or **Normal mode** to switch back. On phones the toggle uses a moon/sun icon. Your choice is saved in that browser on that device; custom button colors and board backups remain unchanged.
+
 - In **Edit**, add a sound button, drag to position it, and drag its bottom-right handle to resize. Buttons overlap freely; Bring forward and Send back set their order. Snap to the 20 px grid is optional and off by default.
 - Select a button to change its label, emoji or image, colors, font, shape, size, and position. Circle and square buttons keep equal dimensions. Duplicate shares the audio while keeping independent playback.
 - Upload MP3, WAV, M4A or other browser-compatible audio, preview it, then save it to the button. Select any previously imported sound in Assigned sound to reuse it.

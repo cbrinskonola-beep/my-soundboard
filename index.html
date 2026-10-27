@@ -7,6 +7,13 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./icon-192.png" />
     <link rel="icon" href="./icon.svg" />
+    <script>
+      try {
+        const night = localStorage.getItem("soundspace-theme") === "night";
+        document.documentElement.dataset.theme = night ? "night" : "normal";
+        document.documentElement.style.colorScheme = night ? "dark" : "light";
+      } catch {}
+    </script>
     <title>Soundspace · Your personal soundboard</title>
   </head>
   <body>

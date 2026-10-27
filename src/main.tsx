@@ -31,6 +31,25 @@ function AudioPreview({ sound }: { sound: Sound }) {
   return <audio controls src={url} />;
 }
 function App() {
+  const [night, setNight] = useState(() => {
+    try {
+      return localStorage.getItem("soundspace-theme") === "night";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    document.documentElement.dataset.theme = night ? "night" : "normal";
+    document.documentElement.style.colorScheme = night ? "dark" : "light";
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", night ? "#191623" : "#7155d9");
+    try {
+      localStorage.setItem("soundspace-theme", night ? "night" : "normal");
+    } catch {
+      /* Still allow switching for this session. */
+    }
+  }, [night]);
   const mixer = useRef(new PerformanceMixer());
   const performancePlayer = useRef<HTMLAudioElement | null>(null);
   const [performanceRecording, setPerformanceRecording] = useState(false);
@@ -435,9 +454,22 @@ function App() {
             ✎ Edit
           </button>
         </div>
-        <button className="stop" onClick={stop}>
-          ■ <span>Stop all sounds</span>
-        </button>
+        <div className="header-actions">
+          <button
+            className="theme-toggle"
+            aria-label={
+              night ? "Switch to normal mode" : "Switch to night mode"
+            }
+            aria-pressed={night}
+            onClick={() => setNight((v) => !v)}
+          >
+            {night ? "☀" : "☾"}{" "}
+            <span>{night ? "Normal mode" : "Night mode"}</span>
+          </button>
+          <button className="stop" onClick={stop}>
+            ■ <span>Stop all sounds</span>
+          </button>
+        </div>
       </header>
       <PerformanceControls
         mixer={mixer.current}
