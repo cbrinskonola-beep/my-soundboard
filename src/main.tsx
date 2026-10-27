@@ -10,6 +10,8 @@ import {
   type Sound,
 } from "./store";
 import "./style.css";
+import { PerformanceMixer } from "./performance";
+import { PerformanceControls } from "./PerformanceControls";
 const uid = () => crypto.randomUUID();
 const colors = [
   "#b9a4ef",
@@ -29,6 +31,9 @@ function AudioPreview({ sound }: { sound: Sound }) {
   return <audio controls src={url} />;
 }
 function App() {
+  const mixer = useRef(new PerformanceMixer());
+  const performancePlayer = useRef<HTMLAudioElement | null>(null);
+  const [performanceRecording, setPerformanceRecording] = useState(false);
   const [board, setBoard] = useState<Board>(fresh),
     [sounds, setSounds] = useState<Sound[]>([]),
     [ready, setReady] = useState(false),
@@ -65,6 +70,7 @@ function App() {
         ),
       );
     return () => {
+      mixer.current.close();
       audio.current.forEach((a) => a.pause());
       urls.current.forEach(URL.revokeObjectURL);
       stream.current?.getTracks().forEach((t) => t.stop());
@@ -106,6 +112,10 @@ function App() {
       pads: b.pads.map((p) => (p.id === selected ? { ...p, ...v } : p)),
     }));
   const stop = () => {
+    if (performancePlayer.current) {
+      performancePlayer.current.pause();
+      performancePlayer.current.currentTime = 0;
+    }
     audio.current.forEach((a) => {
       a.pause();
       a.currentTime = 0;
@@ -124,6 +134,7 @@ function App() {
     let a = audio.current.get(p.id);
     if (!a || a.dataset.sound !== s.id) {
       a?.pause();
+      if (a) mixer.current.remove(a);
       let url = urls.current.get(s.id);
       if (!url) {
         url = URL.createObjectURL(s.blob);
@@ -141,7 +152,11 @@ function App() {
     }
     a.pause();
     a.currentTime = 0;
-    a.volume = p.volume;
+    try {
+      mixer.current.route(a, p.volume);
+    } catch {
+      a.volume = p.volume;
+    }
     a.loop = p.loop;
     void a
       .play()
@@ -410,6 +425,7 @@ function App() {
             ▷ Play
           </button>
           <button
+            disabled={performanceRecording}
             className={edit ? "active" : ""}
             onClick={() => {
               stop();
@@ -423,6 +439,17 @@ function App() {
           ■ <span>Stop all sounds</span>
         </button>
       </header>
+      <PerformanceControls
+        mixer={mixer.current}
+        player={performancePlayer}
+        onBegin={() => {
+          stop();
+          setEdit(false);
+          select(undefined);
+        }}
+        onRecordingChange={setPerformanceRecording}
+        onError={setError}
+      />
       <div className="boardbar">
         <div>
           <input
@@ -436,6 +463,7 @@ function App() {
         </div>
         <div className="actions">
           <button
+            disabled={performanceRecording}
             onClick={() => {
               if (
                 confirm(
@@ -457,6 +485,7 @@ function App() {
             <input
               type="file"
               accept="application/json,.json"
+              disabled={performanceRecording}
               onChange={(e) => void importBoard(e.target.files?.[0])}
             />
           </label>

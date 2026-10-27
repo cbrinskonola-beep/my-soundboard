@@ -32,6 +32,16 @@ The production app includes the offline service worker. Development intentionall
 
 **Local data is not a permanent backup. Clearing browser data, private browsing, storage pressure, or deleting the app can erase sounds. Export backups regularly.** Each browser/device has separate storage. Save failures display an error; exporting remains available. Uploads are limited to 100 MB each, images to 2 MB, and backup imports to 250 MB to protect low-memory devices.
 
+## Record a whole performance
+
+Click **Record performance**, then tap your sound buttons. The app switches to Play mode and captures all button audio, overlaps, volume settings, loops, and silence into one recording. It records the app's sound directly, not your room or microphone. Click **Stop recording performance** to finish; the latest take saves separately in IndexedDB without changing your buttons or uploaded audio.
+
+Click **Play performance**, then choose **0.5×, 1.0×, 1.5×, 2.0×, or 4.0×**. One speed applies to the whole performance, including pauses; you can also change it during playback. The browser preserves pitch where supported. Playback restarts from the beginning when pressed again. **Stop all sounds** stops playback and live buttons; while recording it captures silence until you press **Stop recording performance**.
+
+Wait for **Performance saved on this device** before closing. **Download performance (1×)** exports the mixed audio at its original recorded speed (WebM/Opus or M4A depending on the browser). The speed selector changes playback, not the downloaded file. Only the latest take is retained locally; recording again asks before replacing it. Download takes you want to keep. Board JSON backups do **not** include the separate performance: download it separately. Neither boards nor performances sync between devices.
+
+Keep the app in the foreground and the device awake while recording: mobile browsers may suspend audio in the background. Performance recording requires Web Audio and MediaRecorder support. Mixing many loud overlapping sounds can clip; lower individual button volumes. Storage errors leave the take available for download in the current tab.
+
 ## Cloudflare Pages (free static hosting)
 
 1. Push this project to your GitHub repository.

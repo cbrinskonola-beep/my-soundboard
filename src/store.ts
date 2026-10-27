@@ -107,3 +107,14 @@ export function validBoard(b: unknown): b is Board {
     )
   );
 }
+
+// A separate key leaves existing boards and uploaded sounds untouched.
+export async function loadPerformance() {
+  return (await (await db).get("data", "performance")) as
+    import("./performance").PerformanceTake | undefined;
+}
+export async function savePerformance(
+  take: import("./performance").PerformanceTake,
+) {
+  await (await db).put("data", take, "performance");
+}

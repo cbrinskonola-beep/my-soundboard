@@ -679,3 +679,74 @@ footer {
     gap: 4px;
   }
 }
+.performancebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 25px;
+  background: #f8f5ff;
+  border-bottom: 1px solid #e5dfee;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.performance-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.performance-heading strong {
+  font-size: 12px;
+}
+.performance-heading small {
+  font-size: 10px;
+  color: #81718e;
+}
+.performance-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.performance-actions button {
+  font-size: 11px;
+  min-height: 38px;
+}
+.performance-actions label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+.performance-actions select {
+  width: 75px;
+  padding: 8px;
+}
+.record-active {
+  color: #b03246;
+  border-color: #dba7b0;
+  background: #fff4f5;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.performancebar > audio {
+  display: none;
+}
+@media (max-width: 760px) {
+  .performancebar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .performance-actions {
+    gap: 5px;
+  }
+  .performance-actions button {
+    padding: 8px;
+    font-size: 10px;
+  }
+  .performance-heading small {
+    font-size: 9px;
+  }
+}
