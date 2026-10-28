@@ -12,6 +12,8 @@ export type Pad = {
   shape: string;
   icon: string;
   image?: string;
+  imageFit?: "contain" | "cover" | "fill";
+  showImageLabel?: boolean;
   audio?: string;
   volume: number;
   loop: boolean;
@@ -106,7 +108,11 @@ export function validBoard(b: unknown): b is Board {
         p.volume >= 0 &&
         p.volume <= 1 &&
         typeof p.loop === "boolean" &&
-        (!p.image || p.image.startsWith("data:image/")),
+        (!p.image || p.image.startsWith("data:image/")) &&
+        (p.imageFit === undefined ||
+          ["contain", "cover", "fill"].includes(p.imageFit)) &&
+        (p.showImageLabel === undefined ||
+          typeof p.showImageLabel === "boolean"),
     )
   );
 }

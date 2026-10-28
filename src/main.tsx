@@ -554,7 +554,7 @@ function App() {
                   }}
                 >
                   <button
-                    className={`pad ${p.shape} ${playing.has(p.id) ? "playing" : ""}`}
+                    className={`pad ${p.shape} ${p.image ? "has-image" : ""} ${playing.has(p.id) ? "playing" : ""}`}
                     style={{
                       background: p.color,
                       color: p.textColor,
@@ -565,14 +565,37 @@ function App() {
                     onClick={() => (edit ? select(p.id) : play(p))}
                     aria-label={p.label}
                   >
-                    <span className="padicon">
-                      {p.image ? <img src={p.image} alt="" /> : p.icon}
-                    </span>
-                    <span>{p.label}</span>
-                    {edit && (
-                      <small>
-                        {p.audio ? "● Sound attached" : "＋ Add a sound"}
-                      </small>
+                    {p.image ? (
+                      <>
+                        <span
+                          className={`pad-image fit-${p.imageFit ?? "contain"} ${p.showImageLabel !== false && p.label ? "with-label" : ""}`}
+                        >
+                          <img
+                            src={p.image}
+                            alt=""
+                            draggable={false}
+                            style={{ objectFit: p.imageFit ?? "contain" }}
+                          />
+                        </span>
+                        {p.showImageLabel !== false && p.label && (
+                          <span
+                            className="image-caption"
+                            style={{ background: p.color, color: p.textColor }}
+                          >
+                            {p.label}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="padicon">{p.icon}</span>
+                        <span>{p.label}</span>
+                        {edit && (
+                          <small>
+                            {p.audio ? "● Sound attached" : "＋ Add a sound"}
+                          </small>
+                        )}
+                      </>
                     )}
                   </button>
                   {edit && selected === p.id && (
@@ -756,9 +779,39 @@ function App() {
                   />
                 </label>
                 {pad.image && (
-                  <button onClick={() => change({ image: undefined })}>
-                    Remove image
-                  </button>
+                  <>
+                    <label>
+                      Image fit
+                      <select
+                        aria-label="Image fit"
+                        value={pad.imageFit ?? "contain"}
+                        onChange={(e) =>
+                          change({
+                            imageFit: e.target.value as Pad["imageFit"],
+                          })
+                        }
+                      >
+                        <option value="contain">
+                          Fit whole image (no cropping)
+                        </option>
+                        <option value="cover">Fill shape (crop edges)</option>
+                        <option value="fill">Stretch to fit</option>
+                      </select>
+                    </label>
+                    <label className="check">
+                      <input
+                        type="checkbox"
+                        checked={pad.showImageLabel !== false}
+                        onChange={(e) =>
+                          change({ showImageLabel: e.target.checked })
+                        }
+                      />
+                      Show label on image
+                    </label>
+                    <button onClick={() => change({ image: undefined })}>
+                      Remove image
+                    </button>
+                  </>
                 )}
                 <hr />
                 <h3>Sound</h3>

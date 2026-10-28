@@ -976,3 +976,57 @@ footer {
     gap: 4px;
   }
 }
+
+/* The media area scales with the button; the button clips to its own shape. */
+.pad.has-image {
+  position: relative;
+  padding: 0;
+  isolation: isolate;
+}
+.pad-image {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: block;
+}
+.pad-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-position: center;
+  user-select: none;
+}
+.pad-image.fit-contain {
+  inset: 8%;
+}
+.pad-image.fit-contain.with-label {
+  bottom: 30%;
+}
+.circle .pad-image.fit-contain,
+.oval .pad-image.fit-contain {
+  inset: 15%;
+}
+.circle .pad-image.fit-contain.with-label,
+.oval .pad-image.fit-contain.with-label {
+  bottom: 32%;
+}
+.image-caption {
+  position: absolute;
+  bottom: 8%;
+  left: 12%;
+  right: 12%;
+  padding: 3px 5px;
+  border-radius: 5px;
+  font-size: min(1em, 18px);
+  line-height: 1.15;
+  max-height: 24%;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+.circle .image-caption,
+.oval .image-caption {
+  left: 21%;
+  right: 21%;
+  bottom: 15%;
+}
