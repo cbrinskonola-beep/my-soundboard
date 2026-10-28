@@ -55,7 +55,7 @@ Alternatively, run `npm run build` locally and upload `dist` as a Pages Direct U
 
 Visit the HTTPS production site online first and let the app finish loading. Chrome/Edge on desktop and Android: use the browser's Install app or Add to home screen command. Safari on iPhone/iPad: Share → Add to Home Screen; on recent macOS Safari: File → Add to Dock. Availability and wording vary by browser. The app also works as a normal webpage.
 
-The service worker caches the application shell and built assets; IndexedDB holds your sounds. Reopen the app after the first online load to use it offline. Installing the PWA is optional. Offline readiness needs a successful initial load and browser support, and microphone permissions still apply. For updated releases, revisit online; close and reopen all app tabs if a new service worker is waiting.
+The service worker caches the application shell and built assets; IndexedDB holds your sounds. Reopen the app after the first online load to use it offline. Installing the PWA is optional. Offline readiness needs a successful initial load and browser support, and microphone permissions still apply. When online, opening or refreshing the app fetches the latest page. Updated service workers activate after the new app shell is fully cached. If you still see an older interface, reload once more. Updates leave your saved boards and audio intact; do not clear browser storage to update.
 
 ## Validation
 

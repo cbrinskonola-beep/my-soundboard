@@ -459,7 +459,7 @@ function App() {
             {night ? "☀" : "☾"}{" "}
             <span>{night ? "Normal mode" : "Night mode"}</span>
           </button>
-          <button className="stop" onClick={stop}>
+          <button className="stop" aria-label="Stop all sounds" onClick={stop}>
             ■ <span>Stop all sounds</span>
           </button>
         </div>
@@ -1015,5 +1015,10 @@ function App() {
 createRoot(document.getElementById("root")!).render(<App />);
 if ("serviceWorker" in navigator && import.meta.env.PROD)
   window.addEventListener("load", () => {
-    void navigator.serviceWorker.register("./sw.js");
+    void navigator.serviceWorker
+      .register("./sw.js", { updateViaCache: "none" })
+      .then((registration) => registration.update())
+      .catch(() => {
+        /* Offline shell remains available. */
+      });
   });

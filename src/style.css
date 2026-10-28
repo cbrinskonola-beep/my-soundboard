@@ -824,3 +824,155 @@ button:disabled {
     gap: 4px;
   }
 }
+
+/* Compact chrome keeps the canvas prominent while controls remain reachable. */
+header {
+  height: 50px;
+  min-height: 50px;
+  flex-shrink: 0;
+  padding: 0 16px;
+  gap: 12px;
+}
+.brand {
+  gap: 8px;
+}
+.logo {
+  width: 28px;
+  height: 28px;
+  font-size: 21px;
+  border-radius: 8px;
+}
+.brand strong {
+  font-size: 19px;
+}
+.brand small {
+  display: none;
+}
+.mode {
+  padding: 3px;
+  border-radius: 8px;
+}
+.mode button {
+  min-width: 70px;
+  min-height: 32px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+.header-actions {
+  gap: 8px;
+}
+.header-actions button {
+  min-height: 32px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.boardbar {
+  min-height: 54px;
+  padding: 8px 16px;
+  gap: 8px;
+}
+.boardtitle {
+  font-size: 17px;
+}
+.boardbar button,
+.boardbar .filebutton {
+  min-height: 34px;
+  padding: 7px 10px;
+}
+.speedbar {
+  padding: 7px 16px;
+  gap: 8px;
+}
+.speed-heading small {
+  font-size: 10px;
+}
+.speed-options button {
+  min-height: 38px;
+  padding: 6px 14px;
+  font-size: 14px;
+}
+footer {
+  height: 38px;
+  padding: 0 16px;
+}
+@media (max-width: 760px) {
+  header {
+    height: 50px;
+    padding: 0 10px;
+    gap: 7px;
+  }
+  .boardbar {
+    padding: 7px 10px;
+  }
+  .speedbar {
+    padding: 7px 10px;
+  }
+  .mode button {
+    min-width: 52px;
+    min-height: 36px;
+    padding: 5px 8px;
+  }
+  .header-actions button {
+    min-height: 36px;
+  }
+  .header-actions {
+    gap: 5px;
+  }
+  .speed-options button {
+    min-height: 44px;
+  }
+  .logo {
+    width: 26px;
+    height: 26px;
+  }
+  .brand strong {
+    font-size: 17px;
+  }
+}
+@media (max-width: 480px) {
+  header {
+    gap: 5px;
+  }
+  .brand {
+    gap: 5px;
+  }
+  .brand strong {
+    font-size: 15px;
+  }
+  .mode button {
+    min-width: 46px;
+    padding: 5px 7px;
+  }
+  .header-actions button {
+    padding: 5px 8px;
+  }
+  .speed-heading {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+  .speed-heading small {
+    font-size: 9px;
+  }
+  .speed-options {
+    gap: 5px;
+  }
+  .speedbar {
+    gap: 6px;
+  }
+}
+@media (max-width: 360px) {
+  header {
+    padding: 0 7px;
+    gap: 4px;
+  }
+  .brand strong {
+    font-size: 13px;
+  }
+  .mode button {
+    min-width: 44px;
+  }
+  .header-actions {
+    gap: 4px;
+  }
+}

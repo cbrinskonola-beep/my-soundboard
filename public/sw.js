@@ -21,6 +21,8 @@ self.addEventListener("install", (event) => {
         "./icon-512.png",
         ...paths,
       ]);
+      // A fresh shell is fully cached before taking over; never clear user data.
+      await self.skipWaiting();
     })(),
   );
 });
@@ -28,7 +30,8 @@ self.addEventListener("activate", (event) =>
   event.waitUntil(
     (async () => {
       for (const key of await caches.keys())
-        if (key !== CACHE) await caches.delete(key);
+        if (key.startsWith("soundspace-") && key !== CACHE)
+          await caches.delete(key);
       await self.clients.claim();
     })(),
   ),
@@ -42,6 +45,20 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE);
+      // Prefer the latest page online; keep the cached shell for offline use.
+      if (event.request.mode === "navigate") {
+        try {
+          const response = await fetch(event.request, { cache: "no-cache" });
+          if (response.ok) {
+            await cache.put("./index.html", response.clone());
+            return response;
+          }
+        } catch {
+          /* Offline: use the verified cached app shell below. */
+        }
+        const shell = await cache.match("./index.html", { ignoreVary: true });
+        if (shell) return shell;
+      }
       const hit = await cache.match(event.request, { ignoreVary: true });
       if (hit) return hit;
       try {
