@@ -979,6 +979,8 @@ footer {
 
 /* The media area scales with the button; the button clips to its own shape. */
 .pad.has-image {
+  border: 0;
+  box-shadow: none;
   position: relative;
   padding: 0;
   isolation: isolate;

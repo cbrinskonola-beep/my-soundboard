@@ -556,7 +556,7 @@ function App() {
                   <button
                     className={`pad ${p.shape} ${p.image ? "has-image" : ""} ${playing.has(p.id) ? "playing" : ""}`}
                     style={{
-                      background: p.color,
+                      background: p.image ? "transparent" : p.color,
                       color: p.textColor,
                       fontSize: p.fontSize,
                       touchAction: edit ? "none" : "manipulation",
@@ -568,19 +568,22 @@ function App() {
                     {p.image ? (
                       <>
                         <span
-                          className={`pad-image fit-${p.imageFit ?? "contain"} ${p.showImageLabel !== false && p.label ? "with-label" : ""}`}
+                          className={`pad-image fit-${p.imageFit ?? "cover"} ${p.showImageLabel === true && p.label ? "with-label" : ""}`}
                         >
                           <img
                             src={p.image}
                             alt=""
                             draggable={false}
-                            style={{ objectFit: p.imageFit ?? "contain" }}
+                            style={{ objectFit: p.imageFit ?? "cover" }}
                           />
                         </span>
-                        {p.showImageLabel !== false && p.label && (
+                        {p.showImageLabel === true && p.label && (
                           <span
                             className="image-caption"
-                            style={{ background: p.color, color: p.textColor }}
+                            style={{
+                              background: p.image ? "transparent" : p.color,
+                              color: p.textColor,
+                            }}
                           >
                             {p.label}
                           </span>
@@ -772,7 +775,12 @@ function App() {
                           return;
                         }
                         const r = new FileReader();
-                        r.onload = () => change({ image: String(r.result) });
+                        r.onload = () =>
+                          change({
+                            image: String(r.result),
+                            imageFit: "cover",
+                            showImageLabel: false,
+                          });
                         r.readAsDataURL(f);
                       }
                     }}
@@ -784,7 +792,7 @@ function App() {
                       Image fit
                       <select
                         aria-label="Image fit"
-                        value={pad.imageFit ?? "contain"}
+                        value={pad.imageFit ?? "cover"}
                         onChange={(e) =>
                           change({
                             imageFit: e.target.value as Pad["imageFit"],
@@ -801,7 +809,7 @@ function App() {
                     <label className="check">
                       <input
                         type="checkbox"
-                        checked={pad.showImageLabel !== false}
+                        checked={pad.showImageLabel === true}
                         onChange={(e) =>
                           change({ showImageLabel: e.target.checked })
                         }
