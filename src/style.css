@@ -1032,3 +1032,81 @@ footer {
   right: 21%;
   bottom: 15%;
 }
+
+/* Keep board speed beside appearance controls, with no extra toolbar row. */
+.header-actions .header-speed {
+  width: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.header-actions .header-speed button {
+  min-width: 46px;
+  min-height: 32px;
+  padding: 5px 9px;
+  font-size: 12px;
+  flex: none;
+}
+@media (max-width: 1000px) {
+  header .stop span,
+  header .theme-toggle span {
+    display: none;
+  }
+  .header-actions {
+    gap: 6px;
+  }
+}
+@media (max-width: 760px) {
+  header {
+    height: auto;
+    min-height: 50px;
+    flex-wrap: wrap;
+    padding: 5px 10px;
+  }
+  .header-actions .header-speed button {
+    min-width: 38px;
+    min-height: 38px;
+    padding: 5px 6px;
+  }
+  .header-actions button {
+    min-height: 38px;
+  }
+  .header-actions {
+    gap: 4px;
+  }
+}
+@media (max-width: 600px) {
+  header .brand strong {
+    display: none;
+  }
+  header {
+    gap: 6px;
+    padding: 5px 8px;
+  }
+  .header-actions .header-speed {
+    gap: 3px;
+  }
+  .header-actions .header-speed button {
+    min-width: 34px;
+    padding: 5px 4px;
+  }
+  .header-actions .theme-toggle,
+  header .stop {
+    padding: 5px 7px;
+    min-width: 32px;
+  }
+  .mode button {
+    min-width: 44px;
+    padding: 5px 6px;
+  }
+}
+@media (max-width: 380px) {
+  header .mode {
+    margin-left: auto;
+  }
+  header .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

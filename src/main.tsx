@@ -448,6 +448,24 @@ function App() {
           </button>
         </div>
         <div className="header-actions">
+          <div
+            className="speed-options header-speed"
+            role="group"
+            aria-label="Board speed"
+          >
+            {[0.5, 1, 2, 4].map((speed) => (
+              <button
+                key={speed}
+                aria-label={`Entire board ${speed.toFixed(1)}×`}
+                aria-pressed={(board.speed ?? 1) === speed}
+                className={(board.speed ?? 1) === speed ? "speed-active" : ""}
+                onClick={() => update({ speed })}
+              >
+                {speed.toFixed(1)}×
+              </button>
+            ))}
+          </div>
+
           <button
             className="theme-toggle"
             aria-label={
@@ -464,25 +482,6 @@ function App() {
           </button>
         </div>
       </header>
-      <section className="speedbar" aria-label="Board speed">
-        <div className="speed-heading">
-          <strong>Board speed</strong>
-          <small>One speed for every sound · change it anytime</small>
-        </div>
-        <div className="speed-options" role="group" aria-label="Playback speed">
-          {[0.5, 1, 2, 4].map((speed) => (
-            <button
-              key={speed}
-              aria-label={`Entire board ${speed.toFixed(1)}×`}
-              aria-pressed={(board.speed ?? 1) === speed}
-              className={(board.speed ?? 1) === speed ? "speed-active" : ""}
-              onClick={() => update({ speed })}
-            >
-              {speed.toFixed(1)}×
-            </button>
-          ))}
-        </div>
-      </section>
       <div className="boardbar">
         <div>
           <input

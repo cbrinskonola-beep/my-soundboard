@@ -36,7 +36,7 @@ Use **Night mode** in the top toolbar for a dark interface, or **Normal mode** t
 
 ## Entire-board speed
 
-Use the large **0.5×**, **1.0×**, **2.0×**, or **4.0×** buttons above the canvas. The selected speed applies to every sound button together, including sounds already playing and sounds you trigger next. Changing speed does not restart or stop a sound; pressing a sound button again still restarts it. The browser preserves pitch where supported. Individual volume and looping still work.
+Use the large **0.5×**, **1.0×**, **2.0×**, or **4.0×** buttons in the top toolbar beside the Normal/Night toggle. The selected speed applies to every sound button together, including sounds already playing and sounds you trigger next. Changing speed does not restart or stop a sound; pressing a sound button again still restarts it. The browser preserves pitch where supported. Individual volume and looping still work.
 
 Speed saves automatically with the board and is included in exported board backups. Older saved boards and backups open at 1.0×. **New board** resets to normal 1.0× speed. Your audio files are unchanged. Audio-file and microphone previews use their original speed; previewing an assigned button uses the selected board speed.
 
